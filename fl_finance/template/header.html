@@ -1,0 +1,45 @@
+{template 'base_head'}
+<header>
+    <a href="#" class="logo">
+        <font style="font-size: 26px;font-weight: bolder; color: #fff">财务管理系统</font>
+    </a>
+    <div class="pull-right">
+        <ul id="mini-nav" class="clearfix">
+            <li class="list-box">
+                <a href="#">
+                    <i class="fa fa-user text-warning"></i> <span class="text-white">操作员</span>
+                </a>
+            </li>
+        
+            <li class="list-box">
+                <a href="#">
+                    <i class="fa fa-envelope"></i>
+                </a>
+                <span class="info-label success-bg">0</span>
+            </li>
+            <li class="list-box user-profile">
+                <a id="drop7" href="#" role="button" class="dropdown-toggle user-avtar" data-toggle="dropdown">
+                </a>
+                <ul class="dropdown-menu server-activity">
+                    <li>
+                        <p class="center-align-text">欢迎您, <b>{$_W['username']}</b> !</p>
+                    </li>
+                    <li>
+                        <p onclick="location.href='{php echo murl('home/welcome/ext')}'"><i class="fa fa-reply text-info"></i><span>返回系统</span></p>
+                    </li>
+				
+                    <li>
+                        <p onclick="location.href='/web/index.php?c=user&a=profile&'"><i class="fa fa-lock text-info"></i><span>修改密码</span></p>
+                    </li>
+                    <li>
+                        <div class="demo-btn-group clearfix" onclick="location.href='/web/index.php?c=user&a=logout&'">
+                            <button class="btn btn-danger">
+                                安全退出
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</header>

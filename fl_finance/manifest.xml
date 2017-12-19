@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.6">
+	<application setting="false">
+		<name><![CDATA[企芸财务管理]]></name>
+		<identifie><![CDATA[fl_finance]]></identifie>
+		<version><![CDATA[0.1]]></version>
+		<type><![CDATA[services]]></type>
+		<ability><![CDATA[企芸财务管理]]></ability>
+		<description><![CDATA[企芸财务管理]]></description>
+		<author><![CDATA[疯狼工作组]]></author>
+		<url><![CDATA[http://bbs.we7.cc/]]></url>
+	</application>
+	<platform>
+		
+		<rule embed="false" />
+		<card embed="false" />
+	</platform>
+	<bindings>
+
+
+		<menu>
+			<entry title="管理中心" do="index" state="" direct="false" />
+		
+		</menu>
+	</bindings>
+	<install><![CDATA[
+
+
+]]></install>
+	<uninstall><![CDATA[
+
+]]></uninstall>
+	<upgrade><![CDATA[]]></upgrade>
+</manifest>

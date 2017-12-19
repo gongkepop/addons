@@ -1,0 +1,155 @@
+{template 'header'}
+<script>
+	$(function(){
+		$("#shop").change(function(){
+			var shop_id=$(this).val();
+			var url="{php echo $this->createWebUrl('cashier',array('task'=>'getstafflist'))}"
+			var data={
+				"shop_id":shop_id
+			}
+			var callback=function(data){
+				$("#staff").html(data)
+			}
+			var type="html"
+			$.post(url,data,callback,type);
+		})
+	})
+</script>
+<!-- Main Container start -->
+<div class="dashboard-container">
+  <div class="container">
+    <!-- Top Nav Start -->
+    {template 'nav'}  <!-- Top Nav End -->
+    <div class="sub-nav hidden-sm hidden-xs">
+      <ul>
+        <li><a href="{php echo $this->createWebUrl('index')}" class="heading">首页</a></li>
+        <li class="hidden-sm hidden-xs">
+          <a href="#" class="selected">收款记录</a>
+        </li>
+     </ul>
+      <div class="custom-search hidden-sm hidden-xs">
+        <a href="#">收银管理中心</a> &gt; <a>首页</a>
+      </div>
+    </div>
+	<div class="panel-body" style=" background: #fff">
+		<form id='ff' action="./index.php" method="get" class="form-horizontal" role="form">
+			<input type="hidden" name="c" value="site" />
+			<input type="hidden" name="a" value="entry" />
+			<input type="hidden" name="m" value="{$_GPC[m]}" />
+			<input type="hidden" name="do" value="{$_GPC[do]}" />
+			<input type="hidden" name="task" value="{$_GPC[task]}" />
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">收款店铺</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<select name="shop_id" id="shop" class="form-control">
+						<option value="0">全部</option>
+						{loop $shop $value}
+						<option value="{$value[id]}" {if $value[id]==$_GPC[shop_id]}selected{/if} >{$value[name]}</option>
+						{/loop}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">收款店员</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<select name="staff_id" class="form-control" id="staff">
+						<option value="0">全部</option>
+						{loop $staff $value}
+						<option value="{$value[id]}" {if $value[id]==$_GPC['staff_id']}selected{/if} >{$value[name]}</option>
+						{/loop}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">收款方式</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<select name="pay_status" class="form-control">
+						<option value="0">全部</option>
+						<option value="1" {if $_GPC[pay_status]==1}selected{/if} >现金</option>
+						<option value="2" {if $_GPC[pay_status]==2}selected{/if} >支付宝</option>
+						<option value="3" {if $_GPC[pay_status]==3}selected{/if} >微信</option>
+						<option value="4" {if $_GPC[pay_status]==4}selected{/if} >会员卡</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">是否会员</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+					<select name="is_member" class="form-control">
+						<option value="0">全部</option>
+						<option value="1" {if $_GPC[is_member]==1}selected{/if} >非会员</option>
+						<option value="2" {if $_GPC[is_member]==2}selected{/if} >会员</option>
+					</select>
+				</div>
+			</div>
+		
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">收款日期</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9">
+						{php echo tpl_form_field_daterange('paytime', array('starttime'=>date('Y-m-d', $_GPC['paytime'][start] ? strtotime($_GPC['paytime'][start]): 0),'endtime'=>date('Y-m-d', $_GPC['paytime'][end] ? strtotime($_GPC['paytime'][end]) : strtotime('now'))));}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-2 col-md-2 col-lg-1 control-label">统计金额</label>
+				<div class="col-xs-12 col-sm-8 col-lg-9" style="line-height:27px;font-size:27px">
+						{php echo $allprice?$allprice:"0.00"}元
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-12 col-sm-3 col-md-1 control-label"></label>
+
+      
+        <div class="col-sm-8 col-xs-12">
+				</div>
+     
+				<div class="col-xs-12 col-sm-2 col-lg-1">
+					<button class="btn btn-default" onclick="return search()"><i class="fa fa-search"></i> 搜索</button>
+				</div>
+<!--		<div class="col-xs-12 col-sm-2 col-lg-2">
+			<button class="btn btn-default" onclick="return download()"><i class="fa fa-download"></i> 导出</button>
+				</div>-->
+				
+			</div>
+
+			<div class="form-group">
+			</div>
+		</form>
+	</div>
+    <!-- Sub Nav End -->
+      <div class="dashboard-wrapper">
+		  
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="panel-body">
+                      <table  class="table table-hover"  style="width:100%;z-index:-10;" cellspacing="0" cellpadding="0">
+                          <tr>
+                              <th style="width:50px;">ID</th>
+                              <th style="width:120px;">收款时间</th>
+                              <th style="width:120px;">收款金额</th>
+                              <th style="width:120px;">收款方式</th>
+                              <th style="width:120px;">收款店铺</th>
+                              <th style="width:120px;">收款人</th>
+							  <th style="width:120px;">会员卡号</th>
+                          </tr>
+                          </thead>
+                          {loop $list $value}
+                          <tr>
+                              <td>{$value[id]}</td>
+                              <td>{php echo date("Y-m-d H:i:s",$value[createtime])}</td>
+                              <td>{$value[price]}</td>
+                              <td>{php echo getcashiertype($value[pay_status])}</td>
+                              <td>{$value[shop_name]}</td>
+							  <td>{$value[staff_name]}</td>
+							  <td>{php echo $value[card_num]?$value[card_num]:"--"}</td>
+                          </tr>
+                          {/loop}
+                      </table>
+                      <div style=" text-align: center">{$pager}</div>
+                  </div>
+                  <div class="form-group col-sm-12">
+                      <input name="token" type="hidden" value="{$_W['token']}" />
+                  </div>
+              </div>
+          </div>
+      </div>
+{template 'footer'}
